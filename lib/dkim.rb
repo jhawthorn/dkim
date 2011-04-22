@@ -1,0 +1,3 @@
+module Dkim
+  # Your code goes here...
+end
