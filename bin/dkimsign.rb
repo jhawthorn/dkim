@@ -5,8 +5,17 @@ if ARGV.length != 2 && ARGV.length != 3
   exit 0
 end
 
+require 'dkim'
+
 selector, keyfile,mailfile = ARGV
 
 keyfile = File.open(keyfile)
 mailfile = mailfile ? File.open(mailfile) : STDIN
+
+mail = mailfile.read.gsub(/\r?\n/, "\r\n")
+
+mail = Dkim::SignedMail.new mail
+mail.private_key = OpenSSL::PKey::RSA.new(keyfile.read)
+puts mail.to_s
+
 
