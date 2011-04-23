@@ -6,6 +6,7 @@ module Dkim
     EMAIL_REGEX = /[A-Z0-9._%+-]+@([A-Z0-9.-]+\.[A-Z]{2,6})/i
 
     def initialize message
+      message = message.gsub(/\r?\n/, "\r\n")
       headers, body = message.split(/\r?\n\r?\n/, 2)
       @headers = HeaderList.new headers
       @body    = Body.new body
