@@ -3,43 +3,57 @@ require 'base64'
 
 module Dkim
   class SignedMail
-    attr_accessor :private_key
-
-    DefaultHeaders = %w{
-      From Sender Reply-To Subject Date
-      Message-ID To Cc MIME-Version
-      Content-Type Content-Transfer-Encoding Content-ID Content-Description
-      Resent-Date Resent-From Resent-Sender Resent-To Resent-cc
-      Resent-Message-ID
-      In-Reply-To References
-      List-Id List-Help List-Unsubscribe List-Subscribe
-      List-Post List-Owner List-Archive}
 
     def initialize message
       headers, body = message.split(/\r?\n\r?\n/, 2)
       @headers = HeaderList.new headers
-      @body = Body.new body
+      @body    = Body.new body
 
-      @alg = "rsa-sha256"
-      @signable_headers = DefaultHeaders.dup
+      @signable_headers  = nil
+      @domain            = nil
+      @selector          = nil
+      @time              = nil
+      @signing_algorithm = nil
+      @private_key       = nil
     end
-    def signed_headers
-      (@headers.map(&:key) & @signable_headers).sort
+
+    # options for signatures
+    attr_writer :signing_algorithm, :signable_headers, :domain, :selector, :time
+
+    def private_key= key
+      key = OpenSSL::PKey::RSA.new(key) if key.is_a?(String)
+      @private_key = key
+    end
+    def private_key
+      @private_key || Dkim::private_key
+    end
+    def signing_algorithm
+      @signing_algorithm || Dkim::signing_algorithm
+    end
+    def signable_headers
+      @signable_headers || Dkim::signable_headers
     end
     def domain
-      @headers['From'].value.split('@').last
+      @domain || Dkim::domain || @headers['From'].value.split('@').last
+    end
+    def selector
+      @selector || Dkim::selector
     end
     def time
       @time ||= Time.now
     end
+
+    def signed_headers
+      (@headers.map(&:key) & signable_headers).sort
+    end
     def dkim_header_values(b)
       [
         'v',  1,
-        'a',  @alg,
+        'a',  signing_algorithm,
         'c',  'relaxed/relaxed',
         'd',  domain,
         'q',  'dns/txt',
-        's',  'mail',
+        's',  selector,
         't',  time.to_i,
         'bh', body_hash,
         'h',  signed_headers.join(':'),
@@ -48,10 +62,10 @@ module Dkim
     end
     def dkim_header(b=nil)
       b ||= header_signature
-      value = dkim_header_values(b).each_slice(2).map do |(key, value)|
+      v = dkim_header_values(b).each_slice(2).map do |(key, value)|
         "#{key}=#{value}"
       end.join('; ')
-      Header.new('DKIM-Signature', value)
+      Header.new('DKIM-Signature', v)
     end
     def canonical_header
       headers = signed_headers.map do |key|
@@ -82,14 +96,15 @@ module Dkim
       Base64.encode64(data).gsub("\n",'')
     end
     def digest_alg
-      case @alg
+      case signing_algorithm
       when 'rsa-sha1'
         OpenSSL::Digest::SHA1.new
       when 'rsa-sha256' 
         OpenSSL::Digest::SHA256.new
       else
-        raise "Unknown digest algorithm: '#{@alg}'"
+        raise "Unknown digest algorithm: '#{signing_algorithm}'"
       end
     end
   end
 end
+

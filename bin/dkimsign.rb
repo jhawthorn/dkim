@@ -9,13 +9,16 @@ require 'dkim'
 
 selector, keyfile,mailfile = ARGV
 
-keyfile = File.open(keyfile)
+keyfile  = File.open(keyfile)
 mailfile = mailfile ? File.open(mailfile) : STDIN
 
 mail = mailfile.read.gsub(/\r?\n/, "\r\n")
+key  = keyfile.read
+
+Dkim::selector    = selector
+Dkim::private_key = key
 
 mail = Dkim::SignedMail.new mail
-mail.private_key = OpenSSL::PKey::RSA.new(keyfile.read)
 puts mail.to_s
 
 
