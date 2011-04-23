@@ -3,6 +3,7 @@ require 'base64'
 
 module Dkim
   class SignedMail
+    EMAIL_REGEX = /[A-Z0-9._%+-]+@([A-Z0-9.-]+\.[A-Z]{2,6})/i
 
     def initialize message
       headers, body = message.split(/\r?\n\r?\n/, 2)
@@ -34,7 +35,7 @@ module Dkim
       @signable_headers || Dkim::signable_headers
     end
     def domain
-      @domain || Dkim::domain || @headers['From'].value.split('@').last
+      @domain || Dkim::domain || (@headers['From'].value =~ EMAIL_REGEX && $1)
     end
     def selector
       @selector || Dkim::selector

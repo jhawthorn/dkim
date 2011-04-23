@@ -18,7 +18,6 @@ key  = keyfile.read
 Dkim::selector    = selector
 Dkim::private_key = key
 
-mail = Dkim::SignedMail.new mail
-puts mail.to_s
+print Dkim::SignedMail.new(mail).to_s
 
 
