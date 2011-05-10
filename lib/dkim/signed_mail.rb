@@ -5,18 +5,18 @@ module Dkim
   class SignedMail
     EMAIL_REGEX = /[A-Z0-9._%+-]+@([A-Z0-9.-]+\.[A-Z]{2,6})/i
 
-    def initialize message
+    def initialize message, options={}
       message = message.gsub(/\r?\n/, "\r\n")
       headers, body = message.split(/\r?\n\r?\n/, 2)
       @headers = HeaderList.new headers
       @body    = Body.new body
 
-      @signable_headers  = nil
-      @domain            = nil
-      @selector          = nil
-      @time              = nil
-      @signing_algorithm = nil
-      @private_key       = nil
+      @signable_headers  = options[:signable_headers]
+      @domain            = options[:domain]
+      @selector          = options[:selector]
+      @time              = options[:time]
+      @signing_algorithm = options[:signing_algorithm]
+      @private_key       = options[:private_key]
     end
 
     # options for signatures
