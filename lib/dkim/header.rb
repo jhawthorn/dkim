@@ -1,6 +1,6 @@
 module Dkim
   class Header < Struct.new(:key, :value)
-    def to_canonical
+    def canonical_relaxed
       key    = self.key.dup
       value  = self.value.dup
 
@@ -22,8 +22,18 @@ module Dkim
 
       "#{key}:#{value}"
     end
-    def to_s
+    def canonical_simple
       "#{key}:#{value}"
+    end
+    def to_s form='simple'
+      case form
+      when 'simple'
+        canonical_simple
+      when 'relaxed'
+        canonical_relaxed
+      else
+        raise "Unknown canonicalization: #{form}"
+      end
     end
   end
 end

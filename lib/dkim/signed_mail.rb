@@ -44,6 +44,14 @@ module Dkim
     def time
       @time ||= Time.now
     end
+    def header_canonicalization
+      # TODO
+      'relaxed'
+    end
+    def body_canonicalization
+      # TODO
+      'relaxed'
+    end
 
     def signed_headers
       (@headers.map(&:key) & signable_headers).sort
@@ -52,7 +60,7 @@ module Dkim
       [
         'v',  1,
         'a',  signing_algorithm,
-        'c',  'relaxed/relaxed',
+        'c',  "#{header_canonicalization}/#{body_canonicalization}",
         'd',  domain,
         'q',  'dns/txt',
         's',  selector,
@@ -74,10 +82,12 @@ module Dkim
         @headers[key]
       end
       headers << dkim_header('')
-      headers.map(&:to_canonical).join("\r\n")
+      headers.map do |header|
+        header.to_s(header_canonicalization)
+      end.join("\r\n")
     end
     def canonical_body
-      @body.to_canonical
+      @body.to_s(body_canonicalization)
     end
 
     def header_signature
