@@ -1,5 +1,9 @@
+require 'dkim/canonicalizable'
+
 module Dkim
   class Body < Struct.new(:body)
+    include Canonicalizable
+
     def canonical_relaxed
       body = self.body.dup
 
@@ -19,16 +23,6 @@ module Dkim
       # Ignores all empty lines at the end of the message body.
       body.gsub!(/(\r?\n)*\z/, '')
       body += "\r\n"
-    end
-    def to_s form='simple'
-      case form
-      when 'simple'
-        canonical_simple
-      when 'relaxed'
-        canonical_relaxed
-      else
-        raise "Unknown canonicalization: #{form}"
-      end
     end
   end
 end

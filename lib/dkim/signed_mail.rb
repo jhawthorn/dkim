@@ -1,6 +1,10 @@
 require 'openssl'
 require 'base64'
 
+require 'dkim/header'
+require 'dkim/header_list'
+require 'dkim/body'
+
 module Dkim
   class SignedMail
     EMAIL_REGEX = /[A-Z0-9._%+-]+@([A-Z0-9.-]+\.[A-Z]{2,6})/i
