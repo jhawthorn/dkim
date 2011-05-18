@@ -9,7 +9,7 @@ module Dkim
     end
     def [](key)
       @headers.detect do |header|
-        header.key == key
+        header.relaxed_key == key
       end
     end
     def each(&block)

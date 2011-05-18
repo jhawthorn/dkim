@@ -24,7 +24,7 @@ module Dkim
     end
 
     # options for signatures
-    attr_writer :signing_algorithm, :signable_headers, :domain, :selector, :time
+    attr_writer :signing_algorithm, :signable_headers, :domain, :selector, :time, :header_canonicalization, :body_canonicalization
 
     def private_key= key
       key = OpenSSL::PKey::RSA.new(key) if key.is_a?(String)
@@ -49,16 +49,14 @@ module Dkim
       @time ||= Time.now
     end
     def header_canonicalization
-      # TODO
-      'relaxed'
+      @header_canonicalization || Dkim::header_canonicalization
     end
     def body_canonicalization
-      # TODO
-      'relaxed'
+      @body_canonicalization || Dkim::body_canonicalization
     end
 
     def signed_headers
-      (@headers.map(&:key) & signable_headers).sort
+      (@headers.map(&:relaxed_key) & signable_headers.map(&:downcase)).sort
     end
     def dkim_header_values(b)
       [
@@ -85,17 +83,18 @@ module Dkim
       headers = signed_headers.map do |key|
         @headers[key]
       end
-      headers << dkim_header('')
       headers.map do |header|
-        header.to_s(header_canonicalization)
-      end.join("\r\n")
+        header.to_s(header_canonicalization) + "\r\n"
+      end.join
     end
     def canonical_body
       @body.to_s(body_canonicalization)
     end
 
     def header_signature
-      base64_encode private_key.sign(digest_alg, canonical_header)
+      headers = canonical_header
+      headers << dkim_header('').to_s(header_canonicalization)
+      base64_encode private_key.sign(digest_alg, headers)
     end
     def body_hash
       base64_encode digest_alg.digest(canonical_body)

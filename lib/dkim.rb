@@ -13,7 +13,7 @@ module Dkim
     List-Post List-Owner List-Archive}
 
   class << self
-    attr_accessor :signing_algorithm, :signable_headers, :domain, :selector
+    attr_accessor :signing_algorithm, :signable_headers, :domain, :selector, :header_canonicalization, :body_canonicalization
 
     attr_reader :private_key
     def private_key= key
@@ -27,9 +27,11 @@ module Dkim
   end
 end
 
-Dkim::signable_headers  = Dkim::DefaultHeaders
-Dkim::domain            = nil
-Dkim::selector          = nil
-Dkim::signing_algorithm = 'rsa-sha256'
-Dkim::private_key       = nil
+Dkim::signable_headers        = Dkim::DefaultHeaders
+Dkim::domain                  = nil
+Dkim::selector                = nil
+Dkim::signing_algorithm       = 'rsa-sha256'
+Dkim::private_key             = nil
+Dkim::header_canonicalization = 'relaxed'
+Dkim::body_canonicalization   = 'relaxed'
 
