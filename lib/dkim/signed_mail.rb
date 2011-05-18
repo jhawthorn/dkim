@@ -81,10 +81,7 @@ module Dkim
     end
     def canonical_header
       headers = signed_headers.map do |key|
-        @headers[key]
-      end
-      headers.map do |header|
-        header.to_s(header_canonicalization) + "\r\n"
+        @headers[key].to_s(header_canonicalization) + "\r\n"
       end.join
     end
     def canonical_body
