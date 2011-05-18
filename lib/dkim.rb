@@ -23,6 +23,10 @@ module Dkim
       key = OpenSSL::PKey::RSA.new(key) if key.is_a?(String)
       @private_key = key
     end
+
+    def sign message, options={}
+      SignedMail.new(message, options).to_s
+    end
   end
 end
 
