@@ -14,7 +14,7 @@ module Dkim
     end
     def [] k
       value = @values.detect {|(a,b)| a == k }
-      value[1]
+      value && value[1]
     end
     def []= k, v
       value = @values.detect {|(a,b)| a == k }
