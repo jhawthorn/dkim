@@ -8,8 +8,6 @@ require 'dkim/header_list'
 
 module Dkim
   class SignedMail
-    EMAIL_REGEX = /[A-Z0-9._%+-]+@([A-Z0-9.-]+\.[A-Z]{2,6})/i
-
     def initialize message, options={}
       message = message.gsub(/\r?\n/, "\r\n")
       headers, body = message.split(/\r?\n\r?\n/, 2)
@@ -41,7 +39,7 @@ module Dkim
       @signable_headers || Dkim::signable_headers
     end
     def domain
-      @domain || Dkim::domain || (@headers['From'].value =~ EMAIL_REGEX && $1)
+      @domain || Dkim::domain
     end
     def selector
       @selector || Dkim::selector
@@ -70,6 +68,10 @@ module Dkim
 
     def dkim_header
       dkim_header = DkimHeader.new
+
+      raise "A private key is required" unless private_key
+      raise "A domain is required"      unless domain
+      raise "A selector is required"    unless selector
 
       # Add basic DKIM info
       dkim_header['v'] = '1'
