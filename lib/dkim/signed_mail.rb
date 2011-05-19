@@ -20,6 +20,8 @@ module Dkim
       @time              = options[:time]
       @signing_algorithm = options[:signing_algorithm]
       @private_key       = options[:private_key]
+      @header_canonicalization = options[:header_canonicalization]
+      @body_canonicalization   = options[:body_canonicalization]
     end
 
     # options for signatures
