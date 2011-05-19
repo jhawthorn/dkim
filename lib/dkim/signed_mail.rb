@@ -1,9 +1,10 @@
 require 'openssl'
 require 'base64'
 
+require 'dkim/body'
+require 'dkim/dkim_header'
 require 'dkim/header'
 require 'dkim/header_list'
-require 'dkim/body'
 
 module Dkim
   class SignedMail
@@ -46,7 +47,7 @@ module Dkim
       @selector || Dkim::selector
     end
     def time
-      @time ||= Time.now
+      @time
     end
     def header_canonicalization
       @header_canonicalization || Dkim::header_canonicalization
@@ -58,27 +59,6 @@ module Dkim
     def signed_headers
       (@headers.map(&:relaxed_key) & signable_headers.map(&:downcase)).sort
     end
-    def dkim_header_values(b)
-      [
-        'v',  1,
-        'a',  signing_algorithm,
-        'c',  "#{header_canonicalization}/#{body_canonicalization}",
-        'd',  domain,
-        'q',  'dns/txt',
-        's',  selector,
-        't',  time.to_i,
-        'bh', body_hash,
-        'h',  signed_headers.join(':'),
-        'b',  b
-      ]
-    end
-    def dkim_header(b=nil)
-      b ||= header_signature
-      v = dkim_header_values(b).each_slice(2).map do |(key, value)|
-        "#{key}=#{value}"
-      end.join('; ')
-      Header.new('DKIM-Signature', v)
-    end
     def canonical_header
       headers = signed_headers.map do |key|
         @headers[key].to_s(header_canonicalization) + "\r\n"
@@ -88,15 +68,34 @@ module Dkim
       @body.to_s(body_canonicalization)
     end
 
-    def header_signature
+    def dkim_header
+      dkim_header = DkimHeader.new
+
+      # Add basic DKIM info
+      dkim_header['v'] = '1'
+      dkim_header['a'] = signing_algorithm
+      dkim_header['c'] = "#{header_canonicalization}/#{body_canonicalization}"
+      dkim_header['d'] = domain
+      dkim_header['q'] = 'dns/txt'
+      dkim_header['s'] = selector
+      dkim_header['t'] = (time || Time.now).to_i
+
+      # Add body hash and blank signature
+      dkim_header['bh']= base64_encode digest_alg.digest(canonical_body)
+      dkim_header['h'] = signed_headers.join(':')
+      dkim_header['b'] = ''
+
+      # Calculate signature based on intermediate signature header
       headers = canonical_header
-      headers << dkim_header('').to_s(header_canonicalization)
-      base64_encode private_key.sign(digest_alg, headers)
+      headers << dkim_header.to_s(header_canonicalization)
+      signature = base64_encode private_key.sign(digest_alg, headers)
+      dkim_header['b'] = signature
+
+      dkim_header
     end
-    def body_hash
-      base64_encode digest_alg.digest(canonical_body)
-    end
+
     def to_s
+      # Return the original message with the calculated header
       headers = @headers.to_a + [dkim_header]
       headers.map(&:to_s).join("\r\n") +
         "\r\n\r\n" +
