@@ -9,8 +9,8 @@ module Dkim
     end
     def value
       @values.map do |(k, v)|
-        "#{k}=#{v}"
-      end.join('; ')
+        " #{k}=#{v}"
+      end.join(';')
     end
     def [] k
       value = @values.detect {|(a,b)| a == k }
