@@ -64,18 +64,22 @@ The following is the default configuration
 The defaults should fit most users needs; however, certain use cases will need them to be customized.
 
 For example, for sending mesages through amazon SES, certain headers should not be signed
+
     Dkim::signable_headers = Dkim::DefaultHeaders - %w{Message-Id Resent-Message-ID Date Return-Path Bounces-To}
 
-rfc4871 states that signers SHOULD sign using rsa-sha256. For this reason, dkim will use rsa-sha1 as a fallback if the openssl library does not support sha256.
+rfc4871 states that signers SHOULD sign using rsa-sha256. For this reason, dkim will *not* use rsa-sha1 as a fallback if the openssl library does not support sha256.
 If you wish to override this behaviour and use whichever algorithm is available you can use this snippet (**not recommended**).
+
     Dkim::signing_algorithm = defined?(OpenSSL::Digest::SHA256) ? 'rsa-sha256' : 'rsa-sha1'
 
 Example executable
 ==================
 
-The library includes the `dkimsign.rb` executable
+The library includes a `dkimsign.rb` executable suitable for testing the library or performing simple signatures.
 
 `dkimsign.rb DOMAIN SELECTOR KEYFILE [MAILFILE]`
+
+If MAILFILE is not specified `dkimsign.rb` will read the mail message from standard in.
 
 Limitations
 ===========
