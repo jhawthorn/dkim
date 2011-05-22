@@ -1,5 +1,4 @@
 require 'openssl'
-require 'base64'
 
 require 'dkim/body'
 require 'dkim/dkim_header'
@@ -108,7 +107,7 @@ module Dkim
 
     private
     def base64_encode data
-      Base64.encode64(data).gsub("\n",'')
+      [data].pack('m0*').gsub("\n",'')
     end
     def digest_alg
       case signing_algorithm
