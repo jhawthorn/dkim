@@ -11,7 +11,7 @@ Installation
 Usage
 =====
 
-Calling `Dkim.sign` on a string representing an email message returns the message with a dkim signature inserted.
+Calling `Dkim.sign` on a string representing an email message returns the message with a DKIM signature inserted.
 
 For example
 
@@ -39,7 +39,7 @@ For example
 
 Necessary configuration
 -----------------------
-The dkim needs a private key, a domain, and a selector specified in order to sign messages.
+A private key, a domain, and a selector need to be specified in order to sign messages.
 
 These can be specified globally
 
@@ -47,24 +47,51 @@ These can be specified globally
     Dkim::selector    = 'mail'
     Dkim::private_key = open('private.pem').read
 
-or overridden per message
+Options can be overridden per message.
 
     Dkim.sign(mail, :selector => 'mail2', :private_key => open('private2.pem').read)
 
 Additional configuration
 ------------------------
 
-    Dkim::signable_headers        = Dkim::DefaultHeaders - ['Time'] # don't sign the time header
-    Dkim::signing_algorithm       = 'rsa-sha1' # can be rsa-sha1 or rsa-sha256 (default)
-    Dkim::header_canonicalization = 'simple'   # Can be simple or relaxed (default)
-    Dkim::body_canonicalization   = 'simple'   # Can be simple or relaxed (default)
+The following is the default configuration
+
+    Dkim::signable_headers        = Dkim::DefaultHeaders # Sign only the specified headers
+    Dkim::signing_algorithm       = 'rsa-sha256' # can be rsa-sha1 or rsa-sha256 (default)
+    Dkim::header_canonicalization = 'relaxed'    # Can be simple or relaxed (default)
+    Dkim::body_canonicalization   = 'relaxed'    # Can be simple or relaxed (default)
+
+The defaults should fit most users needs; however, certain use cases will need them to be customized.
+
+For example, for sending mesages through amazon SES, certain headers should not be signed
+    Dkim::signable_headers = Dkim::DefaultHeaders - %w{Message-Id Resent-Message-ID Date Return-Path Bounces-To}
+
+rfc4871 states that signers SHOULD sign using rsa-sha256. For this reason, dkim will use rsa-sha1 as a fallback if the openssl library does not support sha256.
+If you wish to override this behaviour and use whichever algorithm is available you can use this snippet (**not recommended**).
+    Dkim::signing_algorithm = defined?(OpenSSL::Digest::SHA256) ? 'rsa-sha256' : 'rsa-sha1'
 
 Example executable
 ==================
 
 The library includes the `dkimsign.rb` executable
 
-   Usage: dkimsign.rb DOMAIN SELECTOR KEYFILE [MAILFILE]
+`dkimsign.rb DOMAIN SELECTOR KEYFILE [MAILFILE]`
+
+Limitations
+===========
+
+* Strictly a DKIM signing library. No support for signature verification. *(none planned)*
+* No support for the older Yahoo! DomainKeys standard (rfc4870) *(none planned)*
+* No support for specifying DKIM identity `i=` *(planned)*
+* No support for body length `l=` *(planned)*
+* No support for signature expiration `x=` *(planned)*
+* No support for copied header fields `z=` *(not immediately planned)*
+
+Resources
+=========
+
+* [RFC 4871](http://tools.ietf.org/html/rfc4871)
+* Inspired by perl's [Mail-DKIM](http://dkimproxy.sourceforge.net/)
 
 Copyright
 =========
