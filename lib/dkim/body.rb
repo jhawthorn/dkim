@@ -5,6 +5,9 @@ module Dkim
     include Canonicalizable
 
     def canonical_relaxed
+      # special case from errata 1377
+      return "" if self.body.empty?
+
       body = self.body.dup
 
       # Ignores all whitespace at the end of lines.  Implementations MUST NOT remove the CRLF at the end of the line.
@@ -15,6 +18,7 @@ module Dkim
 
       # Ignores all empty lines at the end of the message body.
       body.gsub!(/(\r?\n)*\z/, '')
+
       body += "\r\n"
     end
     def canonical_simple

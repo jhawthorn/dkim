@@ -51,5 +51,28 @@ class CanonicalizationTest < Test::Unit::TestCase
     eos
     assert_equal expected_body, @mail.canonical_body
   end
+
+  # from errata: empty bodies
+  def test_simple_empty_body
+    @mail = Dkim::SignedMail.new("test: test\r\n\r\n")
+    @mail.body_canonicalization = 'simple'
+
+    assert_equal "\r\n", @mail.canonical_body
+  end
+
+  def test_relaxed_empty_body
+    @mail = Dkim::SignedMail.new("test: test\r\n\r\n")
+    @mail.body_canonicalization = 'relaxed'
+
+    assert_equal "", @mail.canonical_body
+  end
+
+  def test_relaxed_errata_1384
+    body = "testing<crlf><sp><sp><cr><lf><cr><lf>".rfc_format
+    @mail = Dkim::SignedMail.new("test: test\r\n\r\n#{body}")
+    @mail.body_canonicalization = 'relaxed'
+
+    assert_equal "testing\r\n", @mail.canonical_body
+  end
 end
 

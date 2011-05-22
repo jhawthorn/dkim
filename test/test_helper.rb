@@ -14,9 +14,11 @@ class String
   def rfc_format
     str = self.dup
     str.gsub!(/\s/,'')
-    str.gsub!(/<SP>/,' ')
-    str.gsub!(/<CRLF>/,"\r\n")
-    str.gsub!(/<HTAB>/,"\t")
+    str.gsub!(/<SP>/i,' ')
+    str.gsub!(/<CR>/i,"\r")
+    str.gsub!(/<LF>/i,"\n")
+    str.gsub!(/<CRLF>/i,"\r\n")
+    str.gsub!(/<HTAB>/i,"\t")
     str
   end
 end
