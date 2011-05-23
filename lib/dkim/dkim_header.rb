@@ -5,7 +5,7 @@ module Dkim
   class DkimHeader < Header
     def initialize values={}
       self.key = 'DKIM-Signature'
-      @values = values.flatten.each_slice(2).to_a
+      @values = values.to_a.flatten.each_slice(2).to_a
     end
     def value
       @values.map do |(k, v)|
