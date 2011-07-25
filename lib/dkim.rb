@@ -1,5 +1,6 @@
 
 require 'dkim/signed_mail'
+require 'dkim/interceptor'
 
 module Dkim
   DefaultHeaders = %w{

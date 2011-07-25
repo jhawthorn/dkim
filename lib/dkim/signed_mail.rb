@@ -8,7 +8,7 @@ require 'dkim/header_list'
 module Dkim
   class SignedMail
     def initialize message, options={}
-      message = message.gsub(/\r?\n/, "\r\n")
+      message = message.to_s.gsub(/\r?\n/, "\r\n")
       headers, body = message.split(/\r?\n\r?\n/, 2)
       @headers = HeaderList.new headers
       @body    = Body.new body

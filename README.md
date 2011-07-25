@@ -72,6 +72,20 @@ If you wish to override this behaviour and use whichever algorithm is available 
 
     Dkim::signing_algorithm = defined?(OpenSSL::Digest::SHA256) ? 'rsa-sha256' : 'rsa-sha1'
 
+Usage With Rails
+================
+
+Dkim contains `Dkim::Interceptor` which can be used to sign all mail delivered by the [mail gem](https://github.com/mikel/mail) or rails 3, which uses mail.
+For rails, create an initializer (for example `config/initializers/dkim.rb`) with the following template.
+
+    # Configure dkim globally (see above)
+    Dkim::domain      = 'example.com'
+    Dkim::selector    = 'mail'
+    Dkim::private_key = open('private.pem').read
+
+    # This will sign all ActionMailer deliveries
+    ActionMailer::Base.register_interceptor('Dkim::Interceptor')
+
 Example executable
 ==================
 
