@@ -1,5 +1,8 @@
 # dkim Changelog
 
+## 2011.07.25, Version 0.0.3
+* add Dkim::Interceptor class for integration with rails and [mail](https://github.com/mikel/mail)
+
 ## 2011.06.01, Version 0.0.2
 
 * add convenience method Dkim.sign
