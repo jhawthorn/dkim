@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-if ARGV.length != 2 && ARGV.length != 3
+if ARGV.length != 3 && ARGV.length != 4
   puts "Usage: dkimsign.rb DOMAIN SELECTOR KEYFILE [MAILFILE]"
   exit 0
 end
