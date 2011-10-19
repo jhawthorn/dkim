@@ -65,7 +65,7 @@ The defaults should fit most users needs; however, certain use cases will need t
 
 For example, for sending mesages through amazon SES, certain headers should not be signed
 
-    Dkim::signable_headers = Dkim::DefaultHeaders - %w{Message-Id Resent-Message-ID Date Return-Path Bounces-To}
+    Dkim::signable_headers = Dkim::DefaultHeaders - %w{Message-ID Resent-Message-ID Date Return-Path Bounces-To}
 
 rfc4871 states that signers SHOULD sign using rsa-sha256. For this reason, dkim will *not* use rsa-sha1 as a fallback if the openssl library does not support sha256.
 If you wish to override this behaviour and use whichever algorithm is available you can use this snippet (**not recommended**).
