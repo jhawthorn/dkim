@@ -84,7 +84,7 @@ For rails, create an initializer (for example `config/initializers/dkim.rb`) wit
     Dkim::private_key = open('private.pem').read
 
     # This will sign all ActionMailer deliveries
-    ActionMailer::Base.register_interceptor('Dkim::Interceptor')
+    ActionMailer::Base.register_interceptor(Dkim::Interceptor)
 
 Example executable
 ==================
