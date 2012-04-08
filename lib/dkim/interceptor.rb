@@ -5,8 +5,10 @@ module Dkim
       require 'mail/dkim_field'
 
       # strip any existing signatures
-      message.header.fields.reject! do |field|
-        field.name =~ /^DKIM-Signature$/i
+      if message['DKIM-Signature']
+        warn "WARNING: Dkim::Interceptor given a message with an existing signature, which it has replaced."
+        warn "If you really want to add a second signature to the message, you should be using the dkim gem directly."
+        message['DKIM-Signature'] = nil
       end
 
       # generate new signature

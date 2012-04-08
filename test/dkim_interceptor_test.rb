@@ -82,12 +82,22 @@ class DkimInterceptorTest < Test::Unit::TestCase
   end
 
   def test_strips_exsting_headers
+    warnings = ""
+    klass = Class.new(Dkim::Interceptor)
+    klass.class.send(:define_method, :warn) do |message|
+      warnings << message << "\n"
+    end
     @mail = Mail.new(SIGNEDMAIL)
 
+    assert_equal 2, @mail.header.fields.count { |field| field.name =~ /^DKIM-Signature$/i }
     assert_equal 2, @mail.encoded.scan('DKIM-Signature').count
 
-    Dkim::Interceptor.delivering_email(@mail)
+    klass.delivering_email(@mail)
 
+    # should give a warning
+    assert_includes warnings, 'Interceptor'
+
+    assert_equal 1, @mail.header.fields.count { |field| field.name =~ /^DKIM-Signature$/i }
     assert_equal 1, @mail.encoded.scan('DKIM-Signature').count
   end
 end
