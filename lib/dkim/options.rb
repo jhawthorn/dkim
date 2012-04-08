@@ -1,6 +1,6 @@
 module Dkim
   module Options
-    ATTRIBUTES = :private_key, :signing_algorithm, :signable_headers, :domain, :selector, :time, :header_canonicalization, :body_canonicalization
+    ATTRIBUTES = :time, :private_key, :signing_algorithm, :signable_headers, :domain, :selector, :time, :header_canonicalization, :body_canonicalization
     def options
       @options ||= {}
     end

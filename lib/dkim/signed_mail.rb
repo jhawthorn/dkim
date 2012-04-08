@@ -4,55 +4,20 @@ require 'dkim/body'
 require 'dkim/dkim_header'
 require 'dkim/header'
 require 'dkim/header_list'
+require 'dkim/options'
 
 module Dkim
   class SignedMail
+    include Options
+
     def initialize message, options={}
       message = message.to_s.gsub(/\r?\n/, "\r\n")
       headers, body = message.split(/\r?\n\r?\n/, 2)
       @headers = HeaderList.new headers
       @body    = Body.new body
 
-      @signable_headers  = options[:signable_headers]
-      @domain            = options[:domain]
-      @selector          = options[:selector]
-      @time              = options[:time]
-      @signing_algorithm = options[:signing_algorithm]
-      @private_key       = options[:private_key]
-      @header_canonicalization = options[:header_canonicalization]
-      @body_canonicalization   = options[:body_canonicalization]
-    end
-
-    # options for signatures
-    attr_writer :signing_algorithm, :signable_headers, :domain, :selector, :time, :header_canonicalization, :body_canonicalization
-
-    def private_key= key
-      key = OpenSSL::PKey::RSA.new(key) if key.is_a?(String)
-      @private_key = key
-    end
-    def private_key
-      @private_key || Dkim::private_key
-    end
-    def signing_algorithm
-      @signing_algorithm || Dkim::signing_algorithm
-    end
-    def signable_headers
-      @signable_headers || Dkim::signable_headers
-    end
-    def domain
-      @domain || Dkim::domain
-    end
-    def selector
-      @selector || Dkim::selector
-    end
-    def time
-      @time
-    end
-    def header_canonicalization
-      @header_canonicalization || Dkim::header_canonicalization
-    end
-    def body_canonicalization
-      @body_canonicalization || Dkim::body_canonicalization
+      # default options from Dkim.options
+      @options = Dkim.options.merge(options)
     end
 
     def signed_headers
@@ -113,7 +78,7 @@ module Dkim
       case signing_algorithm
       when 'rsa-sha1'
         OpenSSL::Digest::SHA1.new
-      when 'rsa-sha256' 
+      when 'rsa-sha256'
         OpenSSL::Digest::SHA256.new
       else
         raise "Unknown digest algorithm: '#{signing_algorithm}'"
