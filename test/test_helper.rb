@@ -23,8 +23,22 @@ class String
   end
 end
 
+EXAMPLEEMAIL = %{
+From: Joe SixPack <IIVyTowbcT@www.brandonchecketts.com>
+To: Suzie Q <suzie@shopping.example.net>
+Subject: Is dinner ready?
+Date: Fri, 11 Jul 2003 21:00:37 -0700 (PDT)
+Message-ID: <20030712040037.46341.5F8J@football.example.com>
+
+Hi.
+
+We lost the game. Are you hungry yet?
+
+Joe.}.gsub(/\A\n/,'')
+
 # examples used in rfc
 Dkim::domain = 'example.com'
+Dkim::selector = 'brisbane'
 Dkim::private_key = %{
 -----BEGIN RSA PRIVATE KEY-----
 MIICXwIBAAKBgQDwIRP/UC3SBsEmGqZ9ZJW3/DkMoGeLnQg1fWn7/zYtIxN2SnFC
