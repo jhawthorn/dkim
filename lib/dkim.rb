@@ -23,7 +23,7 @@ module Dkim
   end
 end
 
-Dkim::signable_headers        = Dkim::DefaultHeaders
+Dkim::signable_headers        = Dkim::DefaultHeaders.dup
 Dkim::domain                  = nil
 Dkim::selector                = nil
 Dkim::signing_algorithm       = 'rsa-sha256'
