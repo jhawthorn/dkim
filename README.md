@@ -1,5 +1,6 @@
 dkim
 ====
+[![Build Status](https://secure.travis-ci.org/jhawthorn/dkim.png?branch=master)](http://travis-ci.org/jhawthorn/dkim)
 
 A DKIM signing library in ruby.
 
