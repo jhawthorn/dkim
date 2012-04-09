@@ -1,5 +1,11 @@
 # dkim Changelog
 
+## (unreleased), Version 0.1.0
+* Warn and strip existing signatures in Dkim::Interceptor
+
+## 2011.12.10, Version 0.1.0
+* Ensure header lines are not folded using Dkim::Interceptor
+
 ## 2011.07.25, Version 0.0.3
 * add Dkim::Interceptor class for integration with rails and [mail](https://github.com/mikel/mail)
 
