@@ -35,7 +35,7 @@ We lost the game. Are you hungry yet?
 Joe.
 eos
 
-class DkimInterceptorTest < Test::Unit::TestCase
+class DkimInterceptorTest < MiniTest::Unit::TestCase
   def setup
     mail = EXAMPLEEMAIL.dup
 
@@ -53,7 +53,8 @@ class DkimInterceptorTest < Test::Unit::TestCase
     Dkim.signing_algorithm = 'rsa-sha256'
     Dkim::Interceptor.delivering_email(@mail)
     dkim_header = @mail['DKIM-Signature']
-    assert_not_nil dkim_header
+
+    assert dkim_header
     assert_includes dkim_header.to_s, 'rsa-sha256'
     assert_includes dkim_header.to_s, 's=brisbane'
     assert_includes dkim_header.to_s, 'd=example.com'
@@ -70,7 +71,7 @@ class DkimInterceptorTest < Test::Unit::TestCase
     Dkim.signing_algorithm = 'rsa-sha256'
     Dkim::Interceptor.delivering_email(@mail)
     dkim_header = @mail['DKIM-Signature']
-    assert_not_nil dkim_header
+    assert dkim_header
     assert_includes dkim_header.to_s, 'rsa-sha256'
     assert_includes dkim_header.to_s, 's=brisbane'
     assert_includes dkim_header.to_s, 'd=example.com'

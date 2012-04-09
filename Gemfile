@@ -4,6 +4,11 @@ source "http://rubygems.org"
 gemspec
 
 gem "rake"
+gem 'minitest'
 gem 'guard-minitest'
 gem 'mail'
+
+platforms :jruby do
+  gem 'jruby-openssl'
+end
 

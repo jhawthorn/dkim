@@ -1,7 +1,7 @@
 
 require 'test_helper'
 
-class DkimHeaderTest < Test::Unit::TestCase
+class DkimHeaderTest < MiniTest::Unit::TestCase
   def setup
     @header = Dkim::DkimHeader.new
 

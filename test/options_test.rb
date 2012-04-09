@@ -1,5 +1,5 @@
 module Dkim
-  class OptionsTest < Test::Unit::TestCase
+  class OptionsTest < MiniTest::Unit::TestCase
     def setup
       klass = Class.new
       klass.send :include, Options

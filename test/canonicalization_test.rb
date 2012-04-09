@@ -1,7 +1,7 @@
 
 require 'test_helper'
 
-class CanonicalizationTest < Test::Unit::TestCase
+class CanonicalizationTest < MiniTest::Unit::TestCase
   # from section 3.4.6 of rfc4871
   def setup
     @input = <<-eos.rfc_format

@@ -1,5 +1,5 @@
 
-require 'test/unit'
+require 'minitest/autorun'
 require 'dkim'
 
 class String
