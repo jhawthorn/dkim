@@ -72,7 +72,7 @@ module Dkim
 
     private
     def base64_encode data
-      [data].pack('m0*').gsub("\n",'')
+      [data].pack('m0').gsub("\n",'')
     end
     def digest_alg
       case signing_algorithm
