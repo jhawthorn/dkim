@@ -4,6 +4,7 @@ module Dkim
     def options
       @options ||= {}
     end
+    attr_writer :options
 
     ATTRIBUTES.each do |attribute_name|
       define_method(attribute_name){options[attribute_name]}
