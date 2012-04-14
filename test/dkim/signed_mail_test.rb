@@ -43,6 +43,24 @@ module Dkim
       assert_equal 'yk6W9pJJilr5MMgeEdSd7J3IaJI=', dkim_header['bh']
       assert_equal 'sqYGmen+fouyIj83HuJ1v+1x40xp481bLxxcgAWMFsWYEwG05KYl+o0ZWn8jqgd1coKlX29o9iFjcMtZHudT8KpOdcLVYpY3gxzNfEgH79eRz32/ieGgroSK2GoMA/aV1QkxfUZexLUdj9oOX8uaMYXDkj8RGmlEGi+NDz/e4sE=', dkim_header['b']
     end
+
+    def test_empty_body_hashes
+      @mail = @mail.split("\n\n").first + "\n\n"
+
+      # the following are from RFC 6376 section 3.4.3 and 3.4.4
+      [
+        # [bh, options]
+        ['uoq1oCgLlTqpdDX/iUbLy7J1Wic=',                 :body_canonicalization => 'simple',  :signing_algorithm => 'rsa-sha1'],
+        ['frcCV1k9oG9oKj3dpUqdJg1PxRT2RSN/XKdLCPjaYaY=', :body_canonicalization => 'simple',  :signing_algorithm => 'rsa-sha256'],
+        ['2jmj7l5rSw0yVb/vlWAYkK/YBwk=',                 :body_canonicalization => 'relaxed', :signing_algorithm => 'rsa-sha1'],
+        ['47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=', :body_canonicalization => 'relaxed', :signing_algorithm => 'rsa-sha256'],
+      ].each do |body_hash, options|
+        signed_mail = SignedMail.new(@mail, options)
+        dkim_header = signed_mail.dkim_header
+
+        assert_equal body_hash, dkim_header['bh']
+      end
+    end
   end
 end
 
