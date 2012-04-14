@@ -67,7 +67,7 @@ Joe.
       # TODO: double check signing of 'b' header
     end
 
-    def test_header_with_relaxed
+    def test_header_with_simple
       Dkim.header_canonicalization = 'simple'
       Dkim.body_canonicalization = 'simple'
       Dkim.signing_algorithm = 'rsa-sha256'
