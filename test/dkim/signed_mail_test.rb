@@ -50,10 +50,10 @@ module Dkim
       # the following are from RFC 6376 section 3.4.3 and 3.4.4
       [
         # [bh, options]
-        ['uoq1oCgLlTqpdDX/iUbLy7J1Wic=',                 :body_canonicalization => 'simple',  :signing_algorithm => 'rsa-sha1'],
-        ['frcCV1k9oG9oKj3dpUqdJg1PxRT2RSN/XKdLCPjaYaY=', :body_canonicalization => 'simple',  :signing_algorithm => 'rsa-sha256'],
-        ['2jmj7l5rSw0yVb/vlWAYkK/YBwk=',                 :body_canonicalization => 'relaxed', :signing_algorithm => 'rsa-sha1'],
-        ['47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=', :body_canonicalization => 'relaxed', :signing_algorithm => 'rsa-sha256'],
+        ['uoq1oCgLlTqpdDX/iUbLy7J1Wic=',                 {:body_canonicalization => 'simple',  :signing_algorithm => 'rsa-sha1'  }],
+        ['frcCV1k9oG9oKj3dpUqdJg1PxRT2RSN/XKdLCPjaYaY=', {:body_canonicalization => 'simple',  :signing_algorithm => 'rsa-sha256'}],
+        ['2jmj7l5rSw0yVb/vlWAYkK/YBwk=',                 {:body_canonicalization => 'relaxed', :signing_algorithm => 'rsa-sha1'  }],
+        ['47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=', {:body_canonicalization => 'relaxed', :signing_algorithm => 'rsa-sha256'}],
       ].each do |body_hash, options|
         signed_mail = SignedMail.new(@mail, options)
         dkim_header = signed_mail.dkim_header
