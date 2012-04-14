@@ -3,7 +3,7 @@ require 'minitest/autorun'
 require 'dkim'
 
 class String
-  # Parse the format used in rfc4871
+  # Parse the format used in RFC 6376
   #
   # In the following examples, actual whitespace is used only for
   # clarity.  The actual input and output text is designated using
@@ -23,6 +23,7 @@ class String
   end
 end
 
+# examples used in RFC 6376
 EXAMPLEEMAIL = %{
 From: Joe SixPack <IIVyTowbcT@www.brandonchecketts.com>
 To: Suzie Q <suzie@shopping.example.net>
@@ -36,7 +37,6 @@ We lost the game. Are you hungry yet?
 
 Joe.}.gsub(/\A\n/,'')
 
-# examples used in rfc
 Dkim::domain = 'example.com'
 Dkim::selector = 'brisbane'
 Dkim::private_key = %{

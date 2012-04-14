@@ -68,7 +68,7 @@ For example, for sending mesages through amazon SES, certain headers should not 
 
     Dkim::signable_headers = Dkim::DefaultHeaders - %w{Message-ID Resent-Message-ID Date Return-Path Bounces-To}
 
-rfc4871 states that signers SHOULD sign using rsa-sha256. For this reason, dkim will *not* use rsa-sha1 as a fallback if the openssl library does not support sha256.
+RFC 6376 states that signers SHOULD sign using rsa-sha256. For this reason, dkim will *not* use rsa-sha1 as a fallback if the openssl library does not support sha256.
 If you wish to override this behaviour and use whichever algorithm is available you can use this snippet (**not recommended**).
 
     Dkim::signing_algorithm = defined?(OpenSSL::Digest::SHA256) ? 'rsa-sha256' : 'rsa-sha1'
@@ -109,7 +109,7 @@ Limitations
 Resources
 =========
 
-* [RFC 4871](http://tools.ietf.org/html/rfc4871)
+* [RFC 6376](http://tools.ietf.org/html/rfc6376)
 * Inspired by perl's [Mail-DKIM](http://dkimproxy.sourceforge.net/)
 
 Copyright

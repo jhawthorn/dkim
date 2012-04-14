@@ -17,7 +17,7 @@ module Dkim
       assert_equal 'relaxed/relaxed',                              dkim_header['c']
       assert_equal 'dns/txt',                                      dkim_header['q']
 
-      # bh value from RFC4871
+      # bh value from RFC 6376
       assert_equal '2jUSOH9NhtVGCQWNr9BrIAPreKQjO6Sn7XIkfJVOzv8=', dkim_header['bh']
       assert_equal 'mamSUb17FQSZY2lfkeAsH/DvmpHsXdaFAu6BfbVblGBQ5+2yIPCx+clF5wClVBj97utSZb1WwOM0iup1JL37FI/UG+bxHo+MdGLqbLR63THGEdVF8FVeST4o4EQTWe0H3P/sU2rRZ61+M2SrTS94QkKAgj89QNOG48xSAO9xdfs=', dkim_header['b']
     end

@@ -6,7 +6,7 @@ module Dkim
     def setup
       @header = DkimHeader.new
 
-      # from Appendix A of RFC 4871
+      # from Appendix A of RFC 6376
       @header['v'] = '1'
       @header['a'] = 'rsa-sha256'
       @header['s'] = 'brisbane'
@@ -22,7 +22,7 @@ module Dkim
     def test_correct_format
       header = @header.to_s
 
-      # result from RFC 4871 minus trailing ';'
+      # result from RFC 6376 minus trailing ';'
       expected = %{
    DKIM-Signature: v=1; a=rsa-sha256; s=brisbane; d=example.com;
          c=simple/simple; q=dns/txt; i=joe@football.example.com;
