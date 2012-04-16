@@ -17,6 +17,7 @@ module Dkim
     def initialize message, options={}
       message = message.to_s.gsub(/\r?\n/, "\r\n")
       headers, body = message.split(/\r?\n\r?\n/, 2)
+      @original_message = message
       @headers = HeaderList.new headers
       @body    = Body.new body
 
@@ -74,10 +75,7 @@ module Dkim
 
     # @return [String] Message combined with calculated dkim header signature
     def to_s
-      headers = @headers.to_a + [dkim_header]
-      headers.map(&:to_s).join("\r\n") +
-        "\r\n\r\n" +
-        @body.to_s
+      dkim_header.to_s + "\r\n" + @original_message
     end
 
     private
