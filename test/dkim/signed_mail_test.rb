@@ -16,6 +16,7 @@ module Dkim
       assert_equal 'example.com',                                  dkim_header['d']
       assert_equal 'relaxed/relaxed',                              dkim_header['c']
       assert_equal 'dns/txt',                                      dkim_header['q']
+      assert_equal "date:from:message-id:subject:to", signed_mail.dkim_header['h']
 
       # bh value from RFC 6376
       assert_equal '2jUSOH9NhtVGCQWNr9BrIAPreKQjO6Sn7XIkfJVOzv8=', dkim_header['bh']
@@ -40,6 +41,7 @@ module Dkim
       assert_equal 'example.org',                  dkim_header['d']
       assert_equal 'simple/simple',                dkim_header['c']
       assert_equal 'dns/txt',                      dkim_header['q']
+      assert_equal "date:from:message-id:subject:to", signed_mail.dkim_header['h']
       assert_equal 'yk6W9pJJilr5MMgeEdSd7J3IaJI=', dkim_header['bh']
       assert_equal 'sqYGmen+fouyIj83HuJ1v+1x40xp481bLxxcgAWMFsWYEwG05KYl+o0ZWn8jqgd1coKlX29o9iFjcMtZHudT8KpOdcLVYpY3gxzNfEgH79eRz32/ieGgroSK2GoMA/aV1QkxfUZexLUdj9oOX8uaMYXDkj8RGmlEGi+NDz/e4sE=', dkim_header['b']
     end
