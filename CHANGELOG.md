@@ -1,9 +1,10 @@
 # dkim Changelog
 
-## (unreleased), Version 0.2.0
+## 2012.04.15, Version 0.2.0
 * Warn and strip existing signatures in Dkim::Interceptor
-* refactoring and better testing
 * Dkim options can be accessed and modified using new Dkim.options or signed_mail.options hash
+* Refactoring and better testing
+* Improved documentation
 
 ## 2011.12.10, Version 0.1.0
 * Ensure header lines are not folded using Dkim::Interceptor
