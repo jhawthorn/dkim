@@ -5,24 +5,21 @@ module Dkim
   class DkimHeader < Header
     def initialize values={}
       self.key = 'DKIM-Signature'
-      @values = values.to_a.flatten.each_slice(2).to_a
+      @keys = values.keys
+      @values = values.dup
     end
     def value
-      @values.map do |(k, v)|
+      @keys.map do |k|
+        v = @values[k]
         " #{k}=#{v}"
       end.join(';')
     end
     def [] k
-      value = @values.detect {|(a,b)| a == k }
-      value && value[1]
+      @values[k]
     end
     def []= k, v
-      value = @values.detect {|(a,b)| a == k }
-      if !value
-        value = [k, nil]
-        @values << value
-      end
-      value[1] = v
+      @keys << k unless self[k]
+      @values[k] = v
     end
   end
 end
