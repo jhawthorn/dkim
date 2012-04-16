@@ -1,45 +1,18 @@
 dkim
 ====
+A DKIM signing library in ruby.
+
 [![Build Status](https://secure.travis-ci.org/jhawthorn/dkim.png?branch=master)](http://travis-ci.org/jhawthorn/dkim)
 
-A DKIM signing library in ruby.
+[Documentation](http://rubydoc.info/github/jhawthorn/dkim)
 
 Installation
 ============
 
     sudo gem install dkim
 
-Usage
-=====
-
-Calling `Dkim.sign` on a string representing an email message returns the message with a DKIM signature inserted.
-
-For example
-
-    mail = <<eos
-    To: someone@example.com
-    From: john@example.com
-    Subject: hi
-    
-    Howdy
-    eos
-
-    Dkim.sign(mail)
-
-    # =>
-    # To: someone@example.com
-    # From: john@example.com
-    # Subject: hi
-    # DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.com; q=dns/txt; s=mail; t=1305917829;
-    #  	bh=qZxwTnSM1ywsrq0Ag9UhQSOtVIG+sW5zDkB+hPbuX08=; h=from:subject:to;
-    #  	b=0mKnNOkxFGiww63Zu4t46J7eZc3Uak3I9km3IH2Le3XcnSNtWJgxiwBX26IZ5yzcT
-    # 	VwJzcCnPKCScIJMQ7yfbfXmNsKVIOV6eSUqu1YvJ1fgzlSAXuDEMNFTjoto5rrdA+
-    # 	BgX849hEY/bWHDl1JJgNpiwtpl4t0Q7M4BVJUd7Lo=
-    # 
-    # Howdy
-
 Necessary configuration
------------------------
+=======================
 A private key, a domain, and a selector need to be specified in order to sign messages.
 
 These can be specified globally
@@ -52,31 +25,12 @@ Options can be overridden per message.
 
     Dkim.sign(mail, :selector => 'mail2', :private_key => open('private2.pem').read)
 
-Additional configuration
-------------------------
-
-The following is the default configuration
-
-    Dkim::signable_headers        = Dkim::DefaultHeaders # Sign only the specified headers
-    Dkim::signing_algorithm       = 'rsa-sha256' # can be rsa-sha1 or rsa-sha256 (default)
-    Dkim::header_canonicalization = 'relaxed'    # Can be simple or relaxed (default)
-    Dkim::body_canonicalization   = 'relaxed'    # Can be simple or relaxed (default)
-
-The defaults should fit most users needs; however, certain use cases will need them to be customized.
-
-For example, for sending mesages through amazon SES, certain headers should not be signed
-
-    Dkim::signable_headers = Dkim::DefaultHeaders - %w{Message-ID Resent-Message-ID Date Return-Path Bounces-To}
-
-RFC 6376 states that signers SHOULD sign using rsa-sha256. For this reason, dkim will *not* use rsa-sha1 as a fallback if the openssl library does not support sha256.
-If you wish to override this behaviour and use whichever algorithm is available you can use this snippet (**not recommended**).
-
-    Dkim::signing_algorithm = defined?(OpenSSL::Digest::SHA256) ? 'rsa-sha256' : 'rsa-sha1'
+For more details see {Dkim::Options}
 
 Usage With Rails
 ================
 
-Dkim contains `Dkim::Interceptor` which can be used to sign all mail delivered by the [mail gem](https://github.com/mikel/mail) or rails 3, which uses mail.
+Dkim contains `Dkim::Interceptor` which can be used to sign all mail delivered by rails 3 or [mail](https://github.com/mikel/mail).
 For rails, create an initializer (for example `config/initializers/dkim.rb`) with the following template.
 
     # Configure dkim globally (see above)
@@ -87,14 +41,49 @@ For rails, create an initializer (for example `config/initializers/dkim.rb`) wit
     # This will sign all ActionMailer deliveries
     ActionMailer::Base.register_interceptor(Dkim::Interceptor)
 
-Example executable
-==================
+Standalone Usage
+================
 
-The library includes a `dkimsign.rb` executable suitable for testing the library or performing simple signatures.
+Calling `Dkim.sign` on a string representing an email message returns the message with a DKIM signature inserted.
 
-`dkimsign.rb DOMAIN SELECTOR KEYFILE [MAILFILE]`
+For example
 
-If MAILFILE is not specified `dkimsign.rb` will read the mail message from standard in.
+    mail = Dkim.sign(<<EOS)
+    To: someone@example.com
+    From: john@example.com
+    Subject: hi
+
+    Howdy
+    EOS
+
+    Dkim.sign(mail)
+    # =>
+    # To: someone@example.com
+    # From: john@example.com
+    # Subject: hi
+    # DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.com; q=dns/txt; s=mail; t=1305917829;
+    #  	bh=qZxwTnSM1ywsrq0Ag9UhQSOtVIG+sW5zDkB+hPbuX08=; h=from:subject:to;
+    #  	b=0mKnNOkxFGiww63Zu4t46J7eZc3Uak3I9km3IH2Le3XcnSNtWJgxiwBX26IZ5yzcT
+    # 	VwJzcCnPKCScIJMQ7yfbfXmNsKVIOV6eSUqu1YvJ1fgzlSAXuDEMNFTjoto5rrdA+
+    # 	BgX849hEY/bWHDl1JJgNpiwtpl4t0Q7M4BVJUd7Lo=
+    #
+    # Howdy
+
+More flexibility can be found using {Dkim::SignedMail} directly.
+
+Specific configuration
+========================
+
+For sending mesages through Amazon SES, certain headers should not be signed
+
+    Dkim::signable_headers = Dkim::DefaultHeaders - %w{Message-ID Resent-Message-ID Date Return-Path Bounces-To}
+
+Some OpenSSL's don't have sha256 support.
+RFC 6376 states that signers SHOULD sign using rsa-sha256.
+For this reason, dkim will *not* use rsa-sha1 as a fallback.
+If you wish to override this behaviour and use whichever algorithm is available you can use this snippet (**not recommended**).
+
+    Dkim::signing_algorithm = defined?(OpenSSL::Digest::SHA256) ? 'rsa-sha256' : 'rsa-sha1'
 
 Limitations
 ===========
@@ -112,8 +101,8 @@ Resources
 * [RFC 6376](http://tools.ietf.org/html/rfc6376)
 * Inspired by perl's [Mail-DKIM](http://dkimproxy.sourceforge.net/)
 
-Copyright
-=========
+License
+=======
 
 (The MIT License)
 

@@ -10,6 +10,10 @@ module Dkim
   class SignedMail
     include Options
 
+    # A new instance of SignedMail
+    #
+    # @param [String,#to_s] message mail message to be signed
+    # @param [Hash] options hash of options for signing. Defaults are taken from {Dkim}. See {Options} for details.
     def initialize message, options={}
       message = message.to_s.gsub(/\r?\n/, "\r\n")
       headers, body = message.split(/\r?\n\r?\n/, 2)
@@ -20,18 +24,24 @@ module Dkim
       @options = Dkim.options.merge(options)
     end
 
+    # @return [Array<String>] Signed headers of message in their canonical forms
     def signed_headers
       (@headers.map(&:relaxed_key) & signable_headers.map(&:downcase)).sort
     end
+
+    # @return [String] Signed headers of message in their canonical forms
     def canonical_header
       headers = signed_headers.map do |key|
         @headers[key].to_s(header_canonicalization) + "\r\n"
       end.join
     end
+
+    # @return [String] Body of message in its canonical form
     def canonical_body
       @body.to_s(body_canonicalization)
     end
 
+    # @return [DkimHeader] Constructed signature for the mail message
     def dkim_header
       dkim_header = DkimHeader.new
 
@@ -62,8 +72,8 @@ module Dkim
       dkim_header
     end
 
+    # @return [String] Message combined with calculated dkim header signature
     def to_s
-      # Return the original message with the calculated header
       headers = @headers.to_a + [dkim_header]
       headers.map(&:to_s).join("\r\n") +
         "\r\n\r\n" +
