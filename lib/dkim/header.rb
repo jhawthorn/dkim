@@ -38,5 +38,12 @@ module Dkim
     def canonical_simple
       "#{key}:#{value}"
     end
+
+    def self.parse header_string
+      header_string.split(/\r?\n(?!([ \t]))/).map do |header|
+        key, value = header.split(':', 2)
+        new(key, value)
+      end
+    end
   end
 end

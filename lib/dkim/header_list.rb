@@ -2,10 +2,7 @@ module Dkim
   class HeaderList
     include Enumerable
     def initialize headers
-      @headers = headers.split(/\r?\n(?!([ \t]))/).map do |header|
-        key, value = header.split(':', 2)
-        Header.new(key, value)
-      end
+      @headers = Header.parse headers
     end
     def [](key)
       @headers.detect do |header|
