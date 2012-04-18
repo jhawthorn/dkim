@@ -27,7 +27,7 @@ module Dkim
 
     # @return [Array<String>] Signed headers of message in their canonical forms
     def signed_headers
-      (@headers.map(&:relaxed_key) & signable_headers.map(&:downcase)).sort
+      @headers.map(&:relaxed_key) & signable_headers.map(&:downcase)
     end
 
     # @return [String] Signed headers of message in their canonical forms
