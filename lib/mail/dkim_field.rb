@@ -14,11 +14,11 @@ module Mail
     end
 
     def encoded
-      "#{name}:#{value}\n"
+      "#{name}:#{value}\r\n"
     end
 
     def decoded
-      "#{name}:#{value}\n"
+      "#{name}:#{value}\r\n"
     end
   end
 end

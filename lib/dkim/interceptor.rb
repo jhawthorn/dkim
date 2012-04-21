@@ -14,8 +14,8 @@ module Dkim
       # generate new signature
       dkim_signature = SignedMail.new(message.encoded).dkim_header.value
 
-      # append signature to message
-      message.header.fields << Mail::DkimField.new(dkim_signature)
+      # prepend signature to message
+      message.header.fields.unshift Mail::DkimField.new(dkim_signature)
       message
     end
   end

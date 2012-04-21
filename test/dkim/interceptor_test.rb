@@ -103,6 +103,20 @@ Joe.
       assert_equal 1, @mail.header.fields.count { |field| field.name =~ /^DKIM-Signature$/i }
       assert_equal 1, @mail.encoded.scan('DKIM-Signature').count
     end
+
+    def test_same_output_as_direct_usage
+      dkim_header = @mail['DKIM-Signature']
+
+      # Most necessary under simple
+      Dkim.header_canonicalization = 'simple'
+      Dkim.body_canonicalization = 'simple'
+
+      expected = Dkim.sign @mail.to_s
+
+      Interceptor.delivering_email(@mail)
+
+      assert_equal expected, @mail.to_s
+    end
   end
 end
 
