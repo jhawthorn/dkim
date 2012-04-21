@@ -63,6 +63,22 @@ module Dkim
         assert_equal body_hash, dkim_header['bh']
       end
     end
+
+    def test_multiple_instances_of_header
+      @mail = <<-eos
+Received: <A>
+Received: <B>
+Received: <C>
+
+      eos
+
+      signed_mail = SignedMail.new(@mail, :header_canonicalization => 'simple', :signable_headers => Dkim::DefaultHeaders + ['Received'])
+
+      assert_equal "received:received:received", signed_mail.dkim_header['h']
+
+      headers = signed_mail.canonical_header
+      assert_equal "Received: <C>\r\nReceived: <B>\r\nReceived: <A>\r\n", headers.to_s
+    end
   end
 end
 

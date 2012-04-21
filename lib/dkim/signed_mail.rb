@@ -5,6 +5,7 @@ require 'dkim/dkim_header'
 require 'dkim/header'
 require 'dkim/header_list'
 require 'dkim/options'
+require 'dkim/canonicalized_headers'
 
 module Dkim
   class SignedMail
@@ -25,16 +26,20 @@ module Dkim
       @options = Dkim.options.merge(options)
     end
 
-    # @return [Array<String>] Signed headers of message in their canonical forms
+    def canonicalized_headers
+      CanonicalizedHeaders.new(@headers, signed_headers)
+    end
+
+    # @return [Array<String>] lowercased names of headers in the order they are signed
     def signed_headers
-      @headers.map(&:relaxed_key) & signable_headers.map(&:downcase)
+      @headers.map(&:relaxed_key).select do |key|
+        signable_headers.map(&:downcase).include?(key)
+      end
     end
 
     # @return [String] Signed headers of message in their canonical forms
     def canonical_header
-      headers = signed_headers.map do |key|
-        @headers[key].to_s(header_canonicalization) + "\r\n"
-      end.join
+      canonicalized_headers.to_s(header_canonicalization)
     end
 
     # @return [String] Body of message in its canonical form
