@@ -3,7 +3,6 @@ require 'openssl'
 require 'dkim/body'
 require 'dkim/dkim_header'
 require 'dkim/header'
-require 'dkim/header_list'
 require 'dkim/options'
 require 'dkim/canonicalized_headers'
 
@@ -19,7 +18,7 @@ module Dkim
       message = message.to_s.gsub(/\r?\n/, "\r\n")
       headers, body = message.split(/\r?\n\r?\n/, 2)
       @original_message = message
-      @headers = HeaderList.new headers
+      @headers = Header.parse headers
       @body    = Body.new body
 
       # default options from Dkim.options
