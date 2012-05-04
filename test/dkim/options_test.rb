@@ -1,3 +1,5 @@
+require 'test_helper'
+
 module Dkim
   class OptionsTest < MiniTest::Unit::TestCase
     def setup
