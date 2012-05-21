@@ -1,6 +1,7 @@
 
 require 'dkim/header'
 require 'dkim/tag_value_list'
+require 'dkim/encodings'
 
 module Dkim
   class DkimHeader < Header
