@@ -12,7 +12,9 @@ module Dkim
       end
 
       @signed_headers.each do |key|
-        yield header_hash[key].pop
+        if header = header_hash[key].pop
+          yield header
+        end
       end
     end
     def to_s(canonicalization)
