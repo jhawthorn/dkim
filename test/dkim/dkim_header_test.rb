@@ -1,5 +1,6 @@
 
 require 'test_helper'
+require 'base64'
 
 module Dkim
   class DkimHeaderTest < MiniTest::Unit::TestCase
@@ -15,8 +16,8 @@ module Dkim
       @header['q'] = 'dns/txt'
       @header['i'] = 'joe@football.example.com'
       @header['h'] = 'Received : From : To : Subject : Date : Message-ID'
-      @header['bh']= '2jUSOH9NhtVGCQWNr9BrIAPreKQjO6Sn7XIkfJVOzv8='
-      @header['b'] = 'AuUoFEfDxTDkHlLXSZEpZj79LICEps6eda7W3deTVFOk4yAUoqOB4nujc7YopdG5dWLSdNg6xNAZpOPr+kHxt1IrE+NahM6L/LbvaHutKVdkLLkpVaVVQPzeRDI009SO2Il5Lu7rDNH6mZckBdrIx0orEtZV4bmp/YzhwvcubU4='
+      @header['bh']= Base64.decode64 '2jUSOH9NhtVGCQWNr9BrIAPreKQjO6Sn7XIkfJVOzv8='
+      @header['b'] = Base64.decode64 'AuUoFEfDxTDkHlLXSZEpZj79LICEps6eda7W3deTVFOk4yAUoqOB4nujc7YopdG5dWLSdNg6xNAZpOPr+kHxt1IrE+NahM6L/LbvaHutKVdkLLkpVaVVQPzeRDI009SO2Il5Lu7rDNH6mZckBdrIx0orEtZV4bmp/YzhwvcubU4='
     end
 
     def test_correct_format

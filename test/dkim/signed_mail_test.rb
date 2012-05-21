@@ -9,7 +9,7 @@ module Dkim
 
     def test_defaults
       signed_mail = SignedMail.new(@mail, :time => Time.at(1234567890))
-      dkim_header = signed_mail.dkim_header
+      dkim_header = signed_mail.dkim_header.list
 
       assert_equal 'rsa-sha256',                                   dkim_header['a']
       assert_equal 'brisbane',                                     dkim_header['s']
@@ -34,7 +34,7 @@ module Dkim
         :time => Time.at(1234567890)
       }
       signed_mail = SignedMail.new(@mail, options)
-      dkim_header = signed_mail.dkim_header
+      dkim_header = signed_mail.dkim_header.list
 
       assert_equal 'rsa-sha1',                        dkim_header['a']
       assert_equal 'sidney',                          dkim_header['s']
@@ -58,7 +58,7 @@ module Dkim
         ['47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=', {:body_canonicalization => 'relaxed', :signing_algorithm => 'rsa-sha256'}],
       ].each do |body_hash, options|
         signed_mail = SignedMail.new(@mail, options)
-        dkim_header = signed_mail.dkim_header
+        dkim_header = signed_mail.dkim_header.list
 
         assert_equal body_hash, dkim_header['bh']
       end

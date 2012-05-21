@@ -64,15 +64,14 @@ module Dkim
       dkim_header['t'] = (time || Time.now).to_i
 
       # Add body hash and blank signature
-      dkim_header['bh']= base64_encode digest_alg.digest(canonical_body)
+      dkim_header['bh']= digest_alg.digest(canonical_body)
       dkim_header['h'] = signed_headers.join(':')
       dkim_header['b'] = ''
 
       # Calculate signature based on intermediate signature header
       headers = canonical_header
       headers << dkim_header.to_s(header_canonicalization)
-      signature = base64_encode private_key.sign(digest_alg, headers)
-      dkim_header['b'] = signature
+      dkim_header['b'] = private_key.sign(digest_alg, headers)
 
       dkim_header
     end
@@ -83,9 +82,6 @@ module Dkim
     end
 
     private
-    def base64_encode data
-      [data].pack('m0').gsub("\n",'')
-    end
     def digest_alg
       case signing_algorithm
       when 'rsa-sha1'
