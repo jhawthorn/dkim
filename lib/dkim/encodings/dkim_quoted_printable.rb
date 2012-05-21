@@ -6,7 +6,7 @@ module Dkim
       DkimUnafeChar = /[^\x21-\x3A\x3C\x3E-\x7E]/
       def encode string
         string.gsub(DkimUnafeChar) do |char|
-          "=%.2x" % char.ord
+          "=%.2x" % char.unpack('C')
         end
       end
       def decode string
