@@ -40,6 +40,9 @@ Joe.
     def setup
       @original_options = Dkim.options.dup
 
+      # ensure time does not change
+      Dkim.time = Time.now
+
       mail = EXAMPLEEMAIL.dup
 
       @mail = Mail.new(mail)
