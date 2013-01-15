@@ -1,6 +1,6 @@
 # dkim Changelog
 
-## 1.0.0
+## 1.0.0 (2012-01-15)
 * DKIM-Signature header is now prepended rather than appended
 * Headers are signed in the order they appear
 * Correct signing of repeated headers
