@@ -40,6 +40,12 @@ module Dkim
     define_option_method :domain
 
     # @attribute [rw]
+    # The identity used for signing.
+    # This corresponds to the i= tag in the dkim header.
+    # @return [String] identity
+    define_option_method :identity
+
+    # @attribute [rw]
     # Selector used for signing.
     # This corresponds to the s= tag in the dkim header.
     # @return [String] selector
