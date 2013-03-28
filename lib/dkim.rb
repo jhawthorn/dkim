@@ -25,6 +25,7 @@ end
 
 Dkim::signable_headers        = Dkim::DefaultHeaders.dup
 Dkim::domain                  = nil
+Dkim::identity                = nil
 Dkim::selector                = nil
 Dkim::signing_algorithm       = 'rsa-sha256'
 Dkim::private_key             = nil

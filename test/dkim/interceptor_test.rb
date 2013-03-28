@@ -56,6 +56,7 @@ Joe.
       Dkim.header_canonicalization = 'relaxed'
       Dkim.body_canonicalization = 'relaxed'
       Dkim.signing_algorithm = 'rsa-sha256'
+      Dkim.identity = '@example.com'
       Interceptor.delivering_email(@mail)
       dkim_header = @mail['DKIM-Signature']
 
@@ -63,6 +64,7 @@ Joe.
       assert_includes dkim_header.to_s, 'rsa-sha256'
       assert_includes dkim_header.to_s, 's=brisbane'
       assert_includes dkim_header.to_s, 'd=example.com'
+      assert_includes dkim_header.to_s, 'i=@example.com'
       assert_includes dkim_header.to_s, 'c=relaxed/relaxed'
       assert_includes dkim_header.to_s, 'q=dns/txt'
       assert_includes dkim_header.to_s, 'bh=2jUSOH9NhtVGCQWNr9BrIAPreKQjO6Sn7XIkfJVOzv8='
@@ -74,12 +76,14 @@ Joe.
       Dkim.header_canonicalization = 'simple'
       Dkim.body_canonicalization = 'simple'
       Dkim.signing_algorithm = 'rsa-sha256'
+      Dkim.identity = '@example.com'
       Interceptor.delivering_email(@mail)
       dkim_header = @mail['DKIM-Signature']
       assert dkim_header
       assert_includes dkim_header.to_s, 'rsa-sha256'
       assert_includes dkim_header.to_s, 's=brisbane'
       assert_includes dkim_header.to_s, 'd=example.com'
+      assert_includes dkim_header.to_s, 'i=@example.com'
       assert_includes dkim_header.to_s, 'c=simple/simple'
       assert_includes dkim_header.to_s, 'q=dns/txt'
       assert_includes dkim_header.to_s, 'bh=2jUSOH9NhtVGCQWNr9BrIAPreKQjO6Sn7XIkfJVOzv8='

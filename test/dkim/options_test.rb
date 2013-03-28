@@ -19,6 +19,7 @@ module Dkim
         :signing_algorithm => 'abc123',
         :signable_headers => [],
         :domain => 'example.net',
+        :identity => '@example.net',
         :selector => 'selector',
         :time => 'time',
         :header_canonicalization => 'simple',
