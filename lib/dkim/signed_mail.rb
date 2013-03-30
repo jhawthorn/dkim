@@ -59,6 +59,7 @@ module Dkim
       dkim_header['a'] = signing_algorithm
       dkim_header['c'] = "#{header_canonicalization}/#{body_canonicalization}"
       dkim_header['d'] = domain
+      dkim_header['i'] = identity if identity
       dkim_header['q'] = 'dns/txt'
       dkim_header['s'] = selector
       dkim_header['t'] = (time || Time.now).to_i
