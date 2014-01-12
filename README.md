@@ -30,8 +30,12 @@ For more details see {Dkim::Options}
 Usage With Rails
 ================
 
-Dkim contains `Dkim::Interceptor` which can be used to sign all mail delivered by rails 3 or [mail](https://github.com/mikel/mail).
-For rails, create an initializer (for example `config/initializers/dkim.rb`) with the following template.
+Dkim contains `Dkim::Interceptor` which can be used to sign all mail delivered
+by [mail](https://github.com/mikel/mail), which is used by actionmailer in
+rails >= 3.
+
+For rails, create an initializer (for example `config/initializers/dkim.rb`)
+with the following template.
 
     # Configure dkim globally (see above)
     Dkim::domain      = 'example.com'
