@@ -1,9 +1,9 @@
-source "http://rubygems.org"
+source 'http://rubygems.org'
 
 # Specify your gem's dependencies in dkim.gemspec
 gemspec
 
-gem "rake"
+gem 'rake'
 gem 'minitest'
 gem 'guard-minitest'
 gem 'mail'
@@ -11,4 +11,3 @@ gem 'mail'
 platforms :jruby do
   gem 'jruby-openssl'
 end
-
