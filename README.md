@@ -23,7 +23,7 @@ These can be specified globally
 
 Options can be overridden per message.
 
-    Dkim.sign(mail, :selector => 'mail2', :private_key => open('private2.pem').read)
+    Dkim.sign(mail, :selector => 'mail2', :private_key => OpenSSL::PKey::RSA.new(open('private2.pem').read))
 
 For more details see {Dkim::Options}
 
