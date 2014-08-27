@@ -2,7 +2,7 @@
 require 'test_helper'
 
 module Dkim
-  class CanonicalizedHeadersTest < MiniTest::Unit::TestCase
+  class CanonicalizedHeadersTest < Minitest::Test
     def test_maintains_order
       headers = "ABCD".chars.map {|c| Header.new(c, c) }
       header_keys = headers.map &:relaxed_key

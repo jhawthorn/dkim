@@ -2,7 +2,7 @@
 require 'test_helper'
 
 module Dkim
-  class TagValueListTest < MiniTest::Unit::TestCase
+  class TagValueListTest < Minitest::Test
     def test_replacement
       @list = TagValueList.new
 

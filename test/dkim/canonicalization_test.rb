@@ -2,7 +2,7 @@
 require 'test_helper'
 
 module Dkim
-  class CanonicalizationTest < MiniTest::Unit::TestCase
+  class CanonicalizationTest < Minitest::Test
     # from section 3.4.6 of RFC 6376
     def setup
       @input = <<-eos.rfc_format

@@ -3,7 +3,7 @@ require 'test_helper'
 require 'base64'
 
 module Dkim
-  class DkimHeaderTest < MiniTest::Unit::TestCase
+  class DkimHeaderTest < Minitest::Test
     def setup
       @header = DkimHeader.new
 
