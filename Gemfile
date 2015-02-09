@@ -5,7 +5,6 @@ gemspec
 
 gem 'rake'
 gem 'minitest'
-gem 'guard-minitest'
 gem 'mail'
 
 platforms :jruby do
