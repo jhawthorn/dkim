@@ -1,5 +1,5 @@
 module Dkim
-  class EncodingsTest < MiniTest::Unit::TestCase
+  class EncodingsTest < Minitest::Test
     def test_plain_text
       @encoder = Encodings::PlainText.new
       assert_equal 'testing123', @encoder.encode('testing123')

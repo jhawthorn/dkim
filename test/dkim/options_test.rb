@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module Dkim
-  class OptionsTest < MiniTest::Unit::TestCase
+  class OptionsTest < Minitest::Test
     def setup
       klass = Class.new
       klass.send :include, Options

@@ -36,7 +36,7 @@ We lost the game. Are you hungry yet?
 Joe.
   eos
 
-  class InterceptorTest < MiniTest::Unit::TestCase
+  class InterceptorTest < Minitest::Test
     def setup
       @original_options = Dkim.options.dup
 

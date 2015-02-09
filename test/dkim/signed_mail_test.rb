@@ -2,7 +2,7 @@
 require 'test_helper'
 
 module Dkim
-  class SignedMailTest < MiniTest::Unit::TestCase
+  class SignedMailTest < Minitest::Test
     def setup
       @mail = EXAMPLEEMAIL.dup
     end
