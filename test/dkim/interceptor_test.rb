@@ -124,6 +124,18 @@ Joe.
 
       assert_equal expected, @mail.to_s
     end
+    
+    def test_dkim_header_is_a_dkim_field
+      dkim_header = @mail['DKIM-Signature']
+
+      # Most necessary under simple
+      Dkim.header_canonicalization = 'simple'
+      Dkim.body_canonicalization = 'simple'
+
+      Interceptor.delivering_email(@mail)
+      
+      assert @mail['DKIM-Signature'].field.is_a?(Mail::DkimField)
+    end
   end
 end
 
