@@ -9,7 +9,8 @@ module Mail
 
     def initialize(value = nil, charset = 'utf-8')
       self.charset = charset
-      super(CAPITALIZED_FIELD, strip_field(FIELD_NAME, value), charset)
+      value = strip_field(FIELD_NAME, value) if respond_to?(:strip_field)
+      super(CAPITALIZED_FIELD, value, charset)
       self
     end
 
@@ -22,4 +23,3 @@ module Mail
     end
   end
 end
-
