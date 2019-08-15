@@ -2,8 +2,6 @@ dkim
 ====
 A DKIM signing library in ruby.
 
-[![Build Status](https://secure.travis-ci.org/jhawthorn/dkim.png?branch=master)](http://travis-ci.org/jhawthorn/dkim)
-
 [Documentation](http://rubydoc.info/github/jhawthorn/dkim)
 
 Installation
