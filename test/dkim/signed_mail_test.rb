@@ -20,7 +20,7 @@ module Dkim
 
       # bh value from RFC 6376
       assert_equal '2jUSOH9NhtVGCQWNr9BrIAPreKQjO6Sn7XIkfJVOzv8=', dkim_header['bh']
-      assert_equal 'dQOeSpGJTfSbX4hPGGsy4ipcNAzC/33K7XaEXkjBneJJhv6MczHkJNsfmXeYESNIh5WVTuvE5IbnDPBVFrL+b3GKiLiyp/vlKO2NJViX4dLnKT/GdxjJh06ljZcYjUA+PorHvMwdu+cDsCffN8A7IhfVdsFruQr3vFPD0JyJ9XU=', dkim_header['b']
+      assert_equal 'QppIlbEcMAX4axIDBcTDYmr5UMS+qZygn6pcHzxw5glhBU0rDMy2bAPN1SqaQnx8pnpbaVtvS5YpkzYf5HOSARRZKerKat1XiN1MHrZzSL7gBUdDU++uGVcqq/CS8sEfUKBQtbAdWychFUx0EkPZrDJdYQZy/UEd+mx1UY4GNY4=', dkim_header['b']
     end
 
     def test_overrides
@@ -43,7 +43,7 @@ module Dkim
       assert_equal 'dns/txt',                         dkim_header['q']
       assert_equal "from:to:subject:date:message-id", dkim_header['h']
       assert_equal 'yk6W9pJJilr5MMgeEdSd7J3IaJI=',    dkim_header['bh']
-      assert_equal 't+dk4yxTI2ByZxxRzkwhZhM4WzTZjGWHiWnS2t4pg7oT7fAIlMrfihJ/CIvGmYqYv4lbq4LStHqHx9TmEgxrkjLevHtuqhxkN55xJ2vA2QzTzFi2fMDZ4fFqWy4QtvlLjBAhevG+LXpmjPYec1cyeMlHlPAthq5+RNi6NHErJiM=', dkim_header['b']
+      assert_equal 'iDzlYPN071tQNcjQHle367n+1ZxnipOr5J3GPj/SUrKgDUXqF7r65Uf23FZMMibYgC3uXZgRFgXrRObBfccJpCgEqp/B8P/mI4jGc3EMuVLUiMrx79beZQOe7a0vSJNwBsqu7fkz1UWp5o2DXT8anUNixV41+37aRakAB5ChYSU=', dkim_header['b']
     end
 
     def test_identity
@@ -58,7 +58,7 @@ module Dkim
 
       assert_equal '@example.org',                                  dkim_header['i']
       assert_equal '2jUSOH9NhtVGCQWNr9BrIAPreKQjO6Sn7XIkfJVOzv8=',  dkim_header['bh']
-      assert_equal 'dCiulbJTD+GCCItMij1IU/RO0+q73afdjmrCWV5Qu7BIT5Kbp5Oi3jqCzj/v8Juks2/L6GBSXZia3aZprNVZX0szt8RnwC9NJx9WhcjN2RPz4Zf5F1jJivCN+PtaIWA3i3Ki/DR1q+RuNPgs7T1KKMo3Ih5uHubZIsMwRzbQBc0=', dkim_header['b']
+      assert_equal 'E+b3dktXUAexSXidTLU6CDLLHgdyWkED27uPqGgYpQadOYrc+JcbdWCqzA4oqrtz5rs0Cjxh6X7AxpjU2xHY2kURkDozNoNMnrilg3Pw2lfpPt6yjP34O8vjnWsiRQBqfeXZ7BDWstPjmXJcjCUnOg9bf1y03jFDuzwHKZSYYNg=', dkim_header['b']
     end
 
     def test_empty_body_hashes
@@ -96,4 +96,3 @@ Received: <C>
     end
   end
 end
-
