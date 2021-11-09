@@ -46,6 +46,19 @@ module Dkim
       assert_equal 't+dk4yxTI2ByZxxRzkwhZhM4WzTZjGWHiWnS2t4pg7oT7fAIlMrfihJ/CIvGmYqYv4lbq4LStHqHx9TmEgxrkjLevHtuqhxkN55xJ2vA2QzTzFi2fMDZ4fFqWy4QtvlLjBAhevG+LXpmjPYec1cyeMlHlPAthq5+RNi6NHErJiM=', dkim_header['b']
     end
 
+    def test_expire
+      options = {
+        :time => Time.at(1234567890),
+        :expire => Time.at(1234567990)
+      }
+      signed_mail = SignedMail.new(@mail, options)
+      dkim_header = signed_mail.dkim_header.list
+
+      assert_equal 1234567990,                                      dkim_header['x']
+      assert_equal '2jUSOH9NhtVGCQWNr9BrIAPreKQjO6Sn7XIkfJVOzv8=',  dkim_header['bh']
+      assert_equal 'dn2Y5rSXQNRBy904vwpvri6xcmlrwKDmDX4XtBgyABQw9jLTulgD/G61TeyqinwgaHiatQaYt4pnpzYQGMaCCg7MepkkpZAR4IggAnHo/qB4JRx5OYBslKCCwpeb70YOPdukVopEnaCoUfkCGJ5vvu3xXG1N+ajKWqYiZ0n4z+o=', dkim_header['b']
+    end
+
     def test_identity
       options = {
         :domain => 'example.org',
