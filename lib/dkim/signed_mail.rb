@@ -63,6 +63,7 @@ module Dkim
       dkim_header['q'] = 'dns/txt'
       dkim_header['s'] = selector
       dkim_header['t'] = (time || Time.now).to_i
+      dkim_header['x'] = expire.to_i if expire
 
       # Add body hash and blank signature
       dkim_header['bh']= digest_alg.digest(canonical_body)

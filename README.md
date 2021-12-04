@@ -94,7 +94,6 @@ Limitations
 * No support for the older Yahoo! DomainKeys standard ([RFC 4870](http://tools.ietf.org/html/rfc4870)) *(none planned)*
 * No support for specifying DKIM identity `i=` *(planned)*
 * No support for body length `l=` *(planned)*
-* No support for signature expiration `x=` *(planned)*
 * No support for copied header fields `z=` *(not immediately planned)*
 
 Resources

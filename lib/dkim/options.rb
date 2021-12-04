@@ -22,6 +22,12 @@ module Dkim
     define_option_method :time
 
     # @attribute [rw]
+    # Signature expiration.
+    # This corresponds to the x= tag in the dkim header.
+    # @return [Time,#to_i] A Time object or seconds since the epoch
+    define_option_method :expire
+
+    # @attribute [rw]
     # The signing algorithm for dkim. Valid values are 'rsa-sha1' and 'rsa-sha256' (default).
     # This corresponds to the a= tag in the dkim header.
     # @return [String] signing algorithm

@@ -1,5 +1,11 @@
 # dkim Changelog
 
+## Unreleased
+
+### Added
+
+* Add support for DKIM expiration tag
+
 ## 1.0.0 (2013-01-15)
 * DKIM-Signature header is now prepended rather than appended
 * Headers are signed in the order they appear
