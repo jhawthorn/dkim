@@ -1,10 +1,12 @@
 # dkim Changelog
 
 ## Unreleased
-
-### Added
-
 * Add support for DKIM expiration tag
+
+## 1.0.1 (2013-01-15)
+* Fix Minitest
+* Add support for identity, the "i=" tag
+* Fix problem with `strip_field` in mail gem 2.7.0
 
 ## 1.0.0 (2013-01-15)
 * DKIM-Signature header is now prepended rather than appended
