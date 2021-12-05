@@ -1,6 +1,8 @@
 # dkim Changelog
 
 ## Unreleased
+
+## 1.1.0 (2021-12-05)
 * Add support for DKIM expiration tag
 
 ## 1.0.1 (2013-01-15)
